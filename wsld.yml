@@ -1,0 +1,103 @@
+openapi: 3.0.0
+info:
+  title: Currency Exchange API
+  description: API для конвертації валют та отримання курсів обміну
+  version: 1.0.0
+servers:
+  - url: /api/v1/currency
+paths:
+  /convert:
+    post:
+      summary: Конвертація суми з однієї валюти в іншу
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConvertRequestDto'
+      responses:
+        '200':
+          description: Успішне виконання конвертації
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConvertResponseDto'
+  /:
+    get:
+      summary: Отримати всі курси валют та їх назви
+      responses:
+        '200':
+          description: Список валют і їхніх курсів
+          content:
+            application/json:
+              schema:
+                type: string
+  /rate:
+    get:
+      summary: Отримати курс між валютами
+      parameters:
+        - name: from
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Валюта, з якої потрібно конвертувати
+        - name: to
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Валюта, в яку потрібно конвертувати
+      responses:
+        '200':
+          description: Курс між валютами
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateResponseDto'
+
+components:
+  schemas:
+    ConvertRequestDto:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+          description: Сума для конвертації
+        fromCurrency:
+          type: string
+          description: Валюта, з якої потрібно конвертувати
+        toCurrency:
+          type: string
+          description: Валюта, в яку потрібно конвертувати
+    ConvertResponseDto:
+      type: object
+      properties:
+        convertedAmount:
+          type: number
+          format: double
+          description: Результат конвертації
+        fromCurrency:
+          type: string
+          description: Початкова валюта
+        toCurrency:
+          type: string
+          description: Цільова валюта
+        rate:
+          type: number
+          format: double
+          description: Курс конвертації
+    RateResponseDto:
+      type: object
+      properties:
+        rate:
+          type: number
+          format: double
+          description: Курс між валютами
+        fromCurrency:
+          type: string
+          description: Початкова валюта
+        toCurrency:
+          type: string
+          description: Цільова валюта
