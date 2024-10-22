@@ -30,7 +30,8 @@ public class CurrencyExchangeController {
     }
 
     @GetMapping("/rate")
-    public ResponseEntity<RateResponseDto> getCurrencyRate(@RequestParam("from") String from, @RequestParam("to") String to){
+    public ResponseEntity<RateResponseDto> getCurrencyRate(@RequestParam("from") String from,
+                                                           @RequestParam("to") String to){
         RateResponseDto rateResponseDto = currencyExchangeService.getCurrencyRate(from, to);
         return ResponseEntity.ok(rateResponseDto);
     }
